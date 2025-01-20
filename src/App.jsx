@@ -4,19 +4,26 @@ import FriendList from "./components/FriendList";
 import AddFriend from "./components/AddFriend";
 import Button from "./components/Button";
 import SplitBill from "./components/SplitBill";
+import { initialFriends } from "./data";
 
 function App() {
   const [showAddFriend, setShowAddFriend] = useState(false);
 
-  const handleShowAddFriend = () => setShowAddFriend((prev) => !prev);
+  const [addFriend, setAddFriend] = useState(initialFriends);
 
-  const [addFriend, setAddFriend] = useState([]);
-  // const [addImage, setAddImage] = useState([]);
+  const [selectedFriend, setSelectedFriend] = useState(null);
+
+  const handleShowAddFriend = () => setShowAddFriend((prev) => !prev);
 
   return (
     <div className="app">
       <div className="sidebar">
-        <FriendList addFriend={addFriend} />
+        <FriendList
+          setShowAddFriend={setShowAddFriend}
+          addFriend={addFriend}
+          setSelectedFriend={setSelectedFriend}
+          selectedFriend={selectedFriend}
+        />
         {showAddFriend && (
           <AddFriend
             setShowAddFriend={setShowAddFriend}
@@ -28,7 +35,9 @@ function App() {
           {showAddFriend ? "Close" : "Add Friend"}
         </Button>
       </div>
-      <SplitBill />
+      {selectedFriend && (
+        <SplitBill selectedFriend={selectedFriend} addFriend={addFriend} setAddFriend={setAddFriend} />
+      )}
     </div>
   );
 }
